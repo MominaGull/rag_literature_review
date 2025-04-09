@@ -6,7 +6,7 @@ from vectorstore.pinecone_index import get_or_create_pinecone_index
 # from vectorstore.milvus_index import get_or_create_milvus_collection
 from ingestion.embedding import get_openai_embeddings, embed_documents
 from ingestion.chunking import chunk_documents
-from langchain_community.document_loaders import UnstructuredMarkdownLoader
+# from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_core.documents import Document
 # from ingestion.markdown_parser import parse_all_markdowns
 from ingestion.pdf_parser import parse_all_pdfs, parse_create_markdown

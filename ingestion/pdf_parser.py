@@ -5,7 +5,7 @@ import logging
 import datetime
 import tempfile
 from io import BytesIO
-import anthropic
+# import anthropic
 from openai import OpenAI
 from langchain_community.document_loaders import PyPDFLoader
 from marker.converters.pdf import PdfConverter
@@ -14,7 +14,7 @@ from marker.output import text_from_rendered
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+# ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 

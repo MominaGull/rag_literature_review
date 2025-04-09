@@ -1,4 +1,4 @@
-import os
+# import os
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.schema import Document
 
