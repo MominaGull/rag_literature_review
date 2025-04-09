@@ -6,18 +6,15 @@ def get_openai_embeddings(api_key: str):
     return OpenAIEmbeddings(openai_api_key=api_key)
 
 def embed_documents(docs: list[Document], 
-                    embeddings) -> list[tuple[str, list[float], dict]]:
+                    embeddings, filename) -> list[tuple[str, list[float], dict]]:
+
     """
-    Embeds a list of documents and prepares them for vector database upsert.
-    
+    Embeds the documents using OpenAI embeddings.
     Args:
-        docs (list[Document]): List of Document objects to embed
-        embeddings: Embedding model instance (e.g., OpenAIEmbeddings)
-        
+        doc (Document): Document object to embed
+        embeddings (OpenAIEmbeddings): OpenAI embeddings instance
     Returns:
-        list[tuple[str, list[float], dict]]: List of tuples containing:
-            - str: Unique ID for each document chunk
-            - list[float]: Embedding vector for the chunk
+        list[tuple[str, list[float], dict]]: List of tuples containing (id, vector, metadata)
     """
     texts = [doc.page_content for doc in docs]
     metadatas = [doc.metadata for doc in docs]
@@ -27,8 +24,9 @@ def embed_documents(docs: list[Document],
     # Construct unique IDs for each chunk
     upserts = []
     for i, vector in enumerate(vectors):
+        # print(i, vector)
         chunk_id = f"doc-chunk-{i}"
         upserts.append(
-            (chunk_id, vector, metadatas[i])
+            {"id": chunk_id, "values": vector, "metadata": metadatas[i]}
         )
     return upserts

@@ -1,2 +1,8 @@
 .env
 .venv/
+notes.txt
+logs/
+markdown_data/
+markdown_data-old/
+testing/
+rag-lit-archive.zip
