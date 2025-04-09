@@ -1,2 +1,11 @@
 .env
 .venv/
+notes.txt
+logs/
+markdown_data/
+markdown_data-old/
+testing/
+rag-lit-archive.zip
+final_docs.txt
+structured_docs.txt
+app/germany-docs.pdf
