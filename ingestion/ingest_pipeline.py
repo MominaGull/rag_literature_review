@@ -29,7 +29,7 @@ def main(pdf_dir=None):
     # data = parse_all_markdowns()
 
     filenames, data = parse_create_markdown(pdf_dir)
-    print("data:", data)
+    # print("data:", data)
 
     # markdown_path = os.path.join("/Users/mominagull/Projects/rag_literature_review/markdown_data/A new measurement method for the dynamic resistance signal during the resistance spot welding process.md")
     # loader = UnstructuredMarkdownLoader(markdown_path)
@@ -44,12 +44,12 @@ def main(pdf_dir=None):
         # Create a Document object directly
         document = Document(
             page_content=data[filename],
-            metadata={"source": "string_input", "format": "markdown"}
+            metadata={"source": filename, "format": "markdown"}
         )
 
         # 3. Chunk each PDF's pages
         all_chunked_docs = chunk_documents(
-            document, chunk_size=1000, chunk_overlap=100)
+            document)
 
         # 4. Embed the chunked docs
         embeddings = get_openai_embeddings(openai_key)

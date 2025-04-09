@@ -25,7 +25,7 @@ def embed_documents(docs: list[Document],
     upserts = []
     for i, vector in enumerate(vectors):
         # print(i, vector)
-        chunk_id = f"doc-chunk-{i}"
+        chunk_id = f"{metadatas[i]['source']}-chunk-{i}"
         upserts.append(
             {"id": chunk_id, "values": vector, "metadata": metadatas[i]}
         )

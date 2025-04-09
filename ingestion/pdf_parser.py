@@ -135,7 +135,7 @@ def parse_create_markdown(pdf_dir: str = None):
                 try:
 
                     converter = PdfConverter(
-                        artifact_dict=create_model_dict(),)
+                        artifact_dict=create_model_dict())
 
                     filepath = os.path.join(pdf_dir, filename)
                     logger.info(f'Converting PDF to markdown: {filepath}')
@@ -201,7 +201,6 @@ def parse_create_markdown(pdf_dir: str = None):
                                 )
 
                                 description = message.choices[0].message.content
-                                print(message)
                                 logger.info(
                                     f"Generated description for {matched_key}")
 

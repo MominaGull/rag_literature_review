@@ -87,7 +87,7 @@ def main():
                         display_metadata["source"] = os.path.basename(display_metadata["source"])
         
                     st.write(display_metadata)
-                    st.write(doc.page_content[:300], "...")
+                    st.write(doc.page_content)
         else:
             st.warning("Please enter a question before submitting.")
 

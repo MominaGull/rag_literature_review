@@ -31,7 +31,10 @@ def build_retrieval_chain(openai_api_key: str,
     
     Question: {question}
     
-    Answer in a comprehensive, scientific manner. Include relevant details from the context.
+    Answer in a comprehensive, scientific manner. Include relevant details from the context. If the context includes a citation, do not include it in the answer since the user would not have access to it.
+    If the context includes a figure or table, use it and explain it in the answer. Do not refer to the figure or table in the answer. Just explain the content.
+    If the context includes a section title, use it to help answer the question. If the context includes a list, summarize it in your answer.
+    If the context includes a definition, method, formula, conclusion, future work, recommendation or novelty, use and explain it in your answer.
     """
 
     QA_CHAIN_PROMPT = PromptTemplate(
@@ -41,7 +44,9 @@ def build_retrieval_chain(openai_api_key: str,
 
     query_transform_prompt = PromptTemplate(
         input_variables=["question"],
-        template="""Given a user question, reformulate it to be a standalone question that will help retrieve relevant context from a vector database about resistance spot welding research.
+        template="""Given a user question, reformulate it to be a standalone question that will help retrieve relevant context from a vector database about resistance spot welding.
+        If the question is complete, proper and understandable, return it as is. Otherwise, reformulate it to be more specific and clear.
+        The reformulated question should be clear, concise, and focused on the specific information needed to answer the original question.
         
         Original question: {question}
         
@@ -49,7 +54,7 @@ def build_retrieval_chain(openai_api_key: str,
     )
 
     query_transformer = LLMChain(
-        llm=ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo", temperature=0),
+        llm=ChatOpenAI(openai_api_key=openai_api_key, model_name=model_name, temperature=0),
         prompt=query_transform_prompt,
         output_key="reformulated_question"
     )
@@ -57,6 +62,7 @@ def build_retrieval_chain(openai_api_key: str,
     def transform_query(inputs):
         question = inputs["query"]
         transformed = query_transformer.run(question)
+        print("transformed:", transformed)
         return {"transformed_query": transformed}
 
     query_transform_chain = TransformChain(
@@ -87,7 +93,7 @@ def build_retrieval_chain(openai_api_key: str,
                      model_name=model_name, temperature=0)
 
     # 6. Build the RetrievalQA chain
-    chain_with_custom_input = RetrievalQA.from_chain_type(
+    retrieval_chain = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
         retriever=retriever,
@@ -97,7 +103,7 @@ def build_retrieval_chain(openai_api_key: str,
     )
 
     final_chain = SequentialChain(
-        chains=[query_transform_chain, chain_with_custom_input],
+        chains=[query_transform_chain, retrieval_chain],
         input_variables=["query"],
         output_variables=["result", "source_documents"]
     )
